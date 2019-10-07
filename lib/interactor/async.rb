@@ -1,3 +1,4 @@
+require "interactor"
 require "interactor/async/version"
 
 module Interactor
