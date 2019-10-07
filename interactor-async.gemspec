@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.authors = ["Kasper Meyer"]
   spec.email = ["hi@kaspermeyer.com"]
 
-  spec.summary = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description = "TODO: Write a longer description or delete this line."
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
+  spec.summary = "Asynchronous interactors"
+  spec.description = "Off-load interactors to a background job with `call_later`."
+  spec.homepage = "https://github.com/kaspermeyer/interactor-async"
   spec.license = "MIT"
 
   # Specify which files should be added to the gem when it is released.
