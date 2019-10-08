@@ -34,7 +34,6 @@ class ConfigurationTest < ActiveJob::TestCase
 
   class AsyncInteractor
     include ::Interactor
-    include ::Interactor::Async
 
     def call
     end

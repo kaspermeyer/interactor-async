@@ -37,7 +37,6 @@ class CallLaterTest < ActiveJob::TestCase
 
   class AsyncInteractor
     include ::Interactor
-    include ::Interactor::Async
 
     def call
       Stateful.touch
