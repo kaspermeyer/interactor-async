@@ -60,7 +60,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activejob
+  activejob (> 4.2)
   bundler (~> 2.0)
   interactor-async!
   minitest (~> 5.0)
