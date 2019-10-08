@@ -32,7 +32,7 @@ class ConfigurationTest < ActiveJob::TestCase
   end
 
   class TestJobWrapper < ActiveJob::Base
-    def perform
+    def perform name
     end
   end
 
