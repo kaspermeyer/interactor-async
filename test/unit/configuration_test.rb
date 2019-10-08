@@ -23,8 +23,9 @@ class ConfigurationTest < ActiveJob::TestCase
     end
   end
 
-  def test_defaulting_to_internal_job_wrapper
-    assert_equal Interactor::Async::Dispatcher, Interactor::Async.config.job_wrapper
+  def test_using_active_job_wrapper_as_default_if_defined
+    assert defined?(ActiveJob)
+    assert_equal ActiveJob::Base, Interactor::Async.config.job_wrapper.superclass
   end
 
   class TestJobWrapper < ActiveJob::Base

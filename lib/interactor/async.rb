@@ -6,10 +6,16 @@ module Interactor
     extend self
 
     if defined?(ActiveJob::Base)
-      class Dispatcher < ActiveJob::Base
+      class ActiveJobDispatcher < ActiveJob::Base
         def perform(name, *args)
           name.constantize.call(*args)
         end
+      end
+    end
+
+    class NullDispatcher
+      def self.perform_later(name, *args)
+        name.constantize.call(*args)
       end
     end
 
@@ -26,10 +32,10 @@ module Interactor
     end
 
     def default_config
-      default_options = if defined?(Dispatcher)
-        {job_wrapper: Dispatcher}
+      default_options = if defined?(ActiveJob::Base)
+        {job_wrapper: ActiveJobDispatcher}
       else
-        {}
+        {job_wrapper: NullDispatcher}
       end
 
       OpenStruct.new(default_options)
