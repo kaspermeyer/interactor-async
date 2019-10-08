@@ -1,23 +1,11 @@
 require "interactor"
 require "interactor/async/version"
+require "interactor/async/null_dispatcher"
+require "interactor/async/active_job_dispatcher"
 
 module Interactor
   module Async
     extend self
-
-    if defined?(ActiveJob::Base)
-      class ActiveJobDispatcher < ActiveJob::Base
-        def perform(name, *args)
-          name.constantize.call(*args)
-        end
-      end
-    end
-
-    class NullDispatcher
-      def self.perform_later(name, *args)
-        name.constantize.call(*args)
-      end
-    end
 
     def configure &block
       instance_eval(&block)
