@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    interactor-async (0.0.1)
+    interactor-async (0.0.2)
       interactor (~> 3.0)
 
 GEM
