@@ -4,7 +4,7 @@ require "interactor/async/version"
 module Interactor
   module Async
     if defined?(ActiveJob::Base)
-      class DispatcherJob < ActiveJob::Base
+      class Dispatcher < ActiveJob::Base
         def perform(name, *args)
           name.constantize.call(*args)
         end
@@ -25,8 +25,8 @@ module Interactor
       end
 
       def default_config
-        default_options = if defined?(DispatcherJob)
-          {job_wrapper: DispatcherJob}
+        default_options = if defined?(Dispatcher)
+          {job_wrapper: Dispatcher}
         else
           {}
         end
