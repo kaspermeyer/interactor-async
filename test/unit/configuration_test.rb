@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ConfigurationTest < ActiveJob::TestCase
-  def setup
+  def teardown
     Interactor::Async.reset_config!
   end
 
@@ -25,10 +25,6 @@ class ConfigurationTest < ActiveJob::TestCase
 
   def test_defaulting_to_internal_job_wrapper
     assert_equal Interactor::Async::DispatcherJob, Interactor::Async.config.job_wrapper
-  end
-
-  def test_raising_error_if_no_job_wrapper_is_defined
-    skip "To be implemented"
   end
 
   class TestJobWrapper < ActiveJob::Base
