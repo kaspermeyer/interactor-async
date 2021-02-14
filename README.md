@@ -1,8 +1,8 @@
 # Interactor::Async
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/interactor/async`. To experiment with that code, run `bin/console` for an interactive prompt.
+Extends the [Interactor](https://github.com/collectiveidea/interactor) gem API with a single method: `call_later`.
 
-TODO: Delete this and the text above, and describe your gem
+Use this method whenever you want to offload an interactor call to a background job.
 
 ## Installation
 
@@ -20,19 +20,47 @@ Or install it yourself as:
 
     $ gem install interactor-async
 
+## Example
+
+```ruby
+class User::SendOnboardingMail
+  include ::Interactor
+
+  def call
+    UserMailer.with(user: context.user).onboarding.deliver_now
+  end
+end
+
+# Send the mail now
+User::SendOnboardingMail.call(user: user)
+
+# Send the mail later
+User::SendOnboardingMail.call_later(user: user)
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+The gem will work out-of-the-box with any app that uses Active Job. Just replace any standard interactor `call` with `call_later` to execute it asynchronously.
 
-## Development
+### Configuration
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+An internal job is used to wrap the interactor call whenever `call_later` is invoked.  If you want more control over the job implementation, or if you use another framework to handle background jobs, you can configure a custom job wrapper class:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+Interactor::Async.configure do
+  config.job_wrapper = CustomJobWrapper
+end
+```
 
-## Contributing
+The configured class must implement the `perform` method, which is invoked every time `call_later` is called on an interactor. It takes two arguments:
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/interactor-async.
+* `name` — the interactor class name (stringified)
+* `*args` — all arguments passed to `call_later`
+
+
+### Caveats
+* All arguments to `call_later` must be serializable.
+* The `call_later` method falls back to the standard `call` method if the project does not use Active Job and no custom job wrapper is configured.
 
 ## License
 
